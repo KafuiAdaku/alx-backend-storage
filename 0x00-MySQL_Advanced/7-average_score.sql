@@ -12,7 +12,8 @@ BEGIN
 	DECLARE avg_score FLOAT DEFAULT 0.0;
 	DECLARE cnt_score INT DEFAULT 0;
 
-	SELECT SUM(score), COUNT(score) INTO tot_score, cnt_score 
+	SELECT COALESCE(SUM(score), 0),  COALESCE(COUNT(score), 0)
+	INTO tot_score, cnt_score
 	FROM corrections
 	WHERE user_id = user_id;
 
