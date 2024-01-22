@@ -16,7 +16,7 @@ methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
 print("Methods:")
 for meth in methods:
     count = nginx_collection.count_documents({"method": meth})
-    print(f"\tmethod {meth} {count}")
+    print(f"\tmethod {meth}: {count}")
 
 status = nginx_collection.count_documents({"method": "GET", "path": "/status"})
 print(f"{status} status check")
