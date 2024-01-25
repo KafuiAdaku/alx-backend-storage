@@ -9,6 +9,7 @@ from functools import wraps
 r = redis.Redis()
 r.flushdb()
 
+
 def cache_page(fn: Callable) -> Callable:
     """"""
     @wraps(fn)
@@ -25,6 +26,7 @@ def cache_page(fn: Callable) -> Callable:
             # r.incr(f"count:{args}")
             return response
     return wrapper
+
 
 @cache_page
 def get_page(url: str) -> str:
@@ -49,6 +51,7 @@ def main():
 
     print(r.get(get_key).decode('utf-8'))
     print(r.get(count_key).decode('utf-8'))
+
 
 if __name__ == "__main__":
     main()
