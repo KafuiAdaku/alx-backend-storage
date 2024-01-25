@@ -7,7 +7,7 @@ from functools import wraps
 
 
 r = redis.Redis()
-r.flushdb()
+# r.flushdb()
 
 
 def cache_page(fn: Callable) -> Callable:
@@ -18,12 +18,13 @@ def cache_page(fn: Callable) -> Callable:
         key = f"{fn.__qualname__}:{args}"
         response = r.get(key)
         if response:
-            r.incr(f"count:{args}")
+            # r.incr(f"count:{args}")
             return response
         else:
+            count_key = f"count:{args}"
             response = fn(*args, **kwargs)
-            r.setex(key, 10, response)
-            r.incr(f"count:{args}")
+            r.incr(count_key)
+            r.set(key, response, ex=10)
             return response
     return wrapper
 
