@@ -59,3 +59,18 @@ class Cache:
     def get_int(self, key):
         """Gets an int"""
         return self.get(key, int)
+
+
+def replay(method: Callable):
+    """Display history of calls of a particular functions"""
+    r = redis.Redis()
+    input_key = method.__qualname__ + ":inputs"
+    output_key = method.__qualname__ + ":outputs"
+    inputs = r.lrange(input_key, 0, -1)
+    outputs = r.lrange(output_key, 0, -1)
+    print(f"{method.__qualname__} was called {len(inputs)} times:")
+
+    for input, output in zip(inputs, outputs):
+        input = input.decode('utf-8') if input else ""
+        output = output.decode('utf-8') if output else ""
+        print(f"{method.__qualname__}(*{input}) -> {output}")

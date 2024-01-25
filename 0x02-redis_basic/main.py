@@ -5,6 +5,7 @@ Main file
 import redis
 
 Cache = __import__('exercise').Cache
+replay = __import__('exercise').replay
 
 cache = Cache()
 
@@ -28,12 +29,12 @@ cache = Cache()
 #     assert cache.get(key, fn=fn) == value
 
 # Task 2
-cache.store(b"first")
-print(cache.get(cache.store.__qualname__))
+# cache.store(b"first")
+# print(cache.get(cache.store.__qualname__))
 
-cache.store(b"second")
-cache.store(b"third")
-print(cache.get(cache.store.__qualname__))
+# cache.store(b"second")
+# cache.store(b"third")
+# print(cache.get(cache.store.__qualname__))
 
 # Task 3
 s1 = cache.store("first")
@@ -48,3 +49,6 @@ outputs = cache._redis.lrange("{}:outputs".format(cache.store.__qualname__), 0, 
 
 print("inputs: {}".format(inputs))
 print("outputs: {}".format(outputs))
+
+# Task 4
+replay(cache.store)
