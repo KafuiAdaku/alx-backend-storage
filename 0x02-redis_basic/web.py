@@ -11,10 +11,10 @@ r.flushdb()
 
 
 def cache_page(fn: Callable) -> Callable:
-    """"""
+    """Caches a web page"""
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        """"""
+        """Wrapper function"""
         key = f"{fn.__qualname__}:{args}"
         response = r.get(key)
         if response:
@@ -23,7 +23,7 @@ def cache_page(fn: Callable) -> Callable:
         else:
             response = fn(*args, **kwargs)
             r.setex(key, 10, response)
-            # r.incr(f"count:{args}")
+            r.incr(f"count:{args}")
             return response
     return wrapper
 
