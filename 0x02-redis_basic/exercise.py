@@ -2,7 +2,7 @@
 """This module contains a basic exercise using redis"""
 import redis
 import uuid
-from typing import Union
+from typing import Union, Callable
 
 
 class Cache:
@@ -16,3 +16,17 @@ class Cache:
         rand_key = str(uuid.uuid4())
         self._redis.set(rand_key, data)
         return rand_key
+
+    def get(self, key, fn: Callable = None):
+        """Gets a key"""
+        if fn is None:
+            return self._redis.get(key)
+        return fn(self._redis.get(key))
+
+    def get_str(self, key):
+        """Gets a string"""
+        return self.get(key, fn)
+
+    def get_int(self, key):
+        """Gets an int"""
+        return self.get(key, fn)
